@@ -1,12 +1,17 @@
 package cn.edu.bjtu.foodie_android.UI;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import cn.edu.bjtu.foodie_android.R;
+import cn.edu.bjtu.foodie_android.fragment.CategoryFragment;
+import cn.edu.bjtu.foodie_android.fragment.HomeFragment;
+import cn.edu.bjtu.foodie_android.fragment.MyAccountFragment;
+import cn.edu.bjtu.foodie_android.fragment.SearchFragment;
 
 public class HomeActivity extends BaseActivity {
+	// private RadioGroup home_radio_button_group;
+
 	private RadioGroup home_radio_button_group;
 
 	@Override
@@ -14,6 +19,9 @@ public class HomeActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		HomeFragment fragment = new HomeFragment();
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.ll_mid_content, fragment).commit();
 		initView();
 		setListener();
 
@@ -21,13 +29,11 @@ public class HomeActivity extends BaseActivity {
 
 	@Override
 	protected void initView() {
-		// TODO Auto-generated method stub
 		home_radio_button_group = (RadioGroup) findViewById(R.id.home_radio_button_group);
 	}
 
 	@Override
 	protected void setListener() {
-		// TODO Auto-generated method stub
 		home_radio_button_group
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -35,20 +41,32 @@ public class HomeActivity extends BaseActivity {
 					public void onCheckedChanged(RadioGroup group, int checkedId) {
 						// TODO Auto-generated method stub
 						switch (checkedId) {
-						case R.id.home_tab_main:// 主页
-							System.out.println("主页");
+						case R.id.home_tab_main:
+							HomeFragment homeFragment = new HomeFragment();
+							getSupportFragmentManager().beginTransaction()
+									.replace(R.id.ll_mid_content, homeFragment)
+									.commit();
 							break;
-						case R.id.home_tab_search:// 搜索
-							System.out.println("搜索");
+						case R.id.home_tab_search:
+							SearchFragment searchFragment = new SearchFragment();
+							getSupportFragmentManager()
+									.beginTransaction()
+									.replace(R.id.ll_mid_content,
+											searchFragment).commit();
 							break;
-						case R.id.home_tab_category:// 分类
-							System.out.println("分类");
+						case R.id.home_tab_category:
+							CategoryFragment categoryFragment = new CategoryFragment();
+							getSupportFragmentManager()
+									.beginTransaction()
+									.replace(R.id.ll_mid_content,
+											categoryFragment).commit();
 							break;
-						case R.id.home_tab_personal:// 个人中心
-							System.out.println("进入个人中心");
-							Intent intent = new Intent(HomeActivity.this,
-									MyAccountActivity.class);
-							startActivity(intent);
+						case R.id.home_tab_personal:
+							MyAccountFragment accountFragment = new MyAccountFragment();
+							getSupportFragmentManager()
+									.beginTransaction()
+									.replace(R.id.ll_mid_content,
+											accountFragment).commit();
 							break;
 						default:
 							break;

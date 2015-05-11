@@ -1,16 +1,16 @@
 package cn.edu.bjtu.foodie_android.UI;
 
-import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import cn.edu.bjtu.foodie_android.manager.AppManager;
 import cn.edu.bjtu.foodie_android.manager.PromptManager;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends FragmentActivity {
 
 	public static final String TAG = BaseActivity.class.getSimpleName();
 	protected InputMethodManager imm;
