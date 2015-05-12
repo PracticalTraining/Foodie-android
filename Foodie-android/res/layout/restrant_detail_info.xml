@@ -106,7 +106,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/btn_style_red"
                     android:id="@+id/order"
-                    android:text="在线预约" />
+                    android:text="order on line" />
 
                 <Button
                     android:layout_width="0dp"
@@ -114,7 +114,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/btn_style_red"
                     android:id="@+id/location"
-                    android:text="餐馆位置" />
+                    android:text="location" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
