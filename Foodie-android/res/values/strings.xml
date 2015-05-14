@@ -20,6 +20,15 @@
     <string name="loginpassword">密  码</string>
     <string name="registerfree">免费注册</string>
        <string name="loginorregister">登录/注册</string>
+         <string name="URL">http://123.57.36.82/foodie/ws/</string>
+    <string name="generic_server_down">Our server is under maintenance. Please wait until we fix it</string>
+    <string name="generic_error">Some error ocured!</string>
+    <string name="no_internet">There is no internet connection!</string>
+    <string name="login_success">Login Successful</string>
+    <string name="register_success">Register Successful</string>
+    <string name="user_not_exists">The User does not exists</string>
+    <string name="password_incorect">The password is not correct</string>
+    <string name="bad_parameters">Bad parameters!</string>
     
 
 </resources>
