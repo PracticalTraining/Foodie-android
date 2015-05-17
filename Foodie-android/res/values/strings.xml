@@ -29,6 +29,8 @@
     <string name="user_not_exists">The User does not exists</string>
     <string name="password_incorect">The password is not correct</string>
     <string name="bad_parameters">Bad parameters!</string>
+    <string name="booking_successful">Booking Successuful</string>
+   	<string name="no_user">Please login before</string>
     
 
 </resources>

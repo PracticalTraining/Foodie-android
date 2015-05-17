@@ -12,6 +12,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,8 +24,11 @@ import cn.edu.bjtu.foodie_android.manager.ApplicationController;
 public class LoginActivity extends BaseActivity {
 	private 			Button 					register;
     private 			Button 					login;
-    private 			LoginActivity           instance;
-    public static final String  				PREFS_NAME = "LoginPrefFile";
+    private 			LoginActivity           instance 	= this;
+    public static final String  				PREFS_NAME 	= "LoginPrefFile";
+    SharedPreferences	settings;						    
+    SharedPreferences.Editor editor;
+
 
 
 
@@ -33,6 +37,8 @@ public class LoginActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		settings		=	this.getSharedPreferences(PREFS_NAME, 0);
+		editor = settings.edit();
 		initView();
 		setListener();
 	}
@@ -85,35 +91,35 @@ public class LoginActivity extends BaseActivity {
          finalurl = finalurl + "&password=";
          finalurl = finalurl + password;
          VolleyLog.d("URL: ", finalurl);
-          JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, finalurl, null,
+         editor.putString("username", username);
+         editor.putString("password", password);
+         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, finalurl, null,
                  new Response.Listener<JSONObject>() {
                      @Override
                      public void onResponse(JSONObject response) {
                          try {
                              VolleyLog.v("Response:%s%n", response.toString(4));
-                             if (response.getInt("id") == 0) {
+                             Log.d("Response:", response.toString());
+                             if (response.has("id")) {
                                  Toast.makeText(instance, getText(R.string.login_success), Toast.LENGTH_SHORT).show();
-                                 SharedPreferences settings = instance.getSharedPreferences(PREFS_NAME, 0);
-                                 SharedPreferences.Editor editor = settings.edit();
                                  editor.putBoolean("login", true);
                                  editor.commit();
-                                 Intent intent = new Intent(LoginActivity.this,
-                                                                 MyAccountActivity.class);
-                                                 startActivity(intent);
-                             }
-                             else if (response.getInt("errorCode") == -1) {
+                                 Intent intent = new Intent(LoginActivity.this, MyAccountActivity.class);
+                                 startActivity(intent);
+                             } 
+                             if (response.getString("errorCode").equals("-1")) {
                                          int duration = Toast.LENGTH_LONG;
-                                         Toast toast = Toast.makeText(instance, getText(R.string.user_not_exists), duration);
+                                         Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.user_not_exists), duration);
                                          toast.show();
                                  }
-                             else if (response.getInt("errorCode") == -2) {
+                             if (response.getInt("errorCode") == -2) {
                                          int duration = Toast.LENGTH_LONG;
-                                         Toast toast = Toast.makeText(instance, getText(R.string.password_incorect), duration);
+                                         Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.password_incorect), duration);
                                          toast.show();
                              }
-                             else if (response.getInt("errorCode") == -3) {
+                             if (response.getInt("errorCode") == -3) {
                                  int duration = Toast.LENGTH_LONG;
-                                 Toast toast = Toast.makeText(instance, getText(R.string.bad_parameters), duration);
+                                 Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.bad_parameters), duration);
                                  toast.show();
                      }
                          } catch (JSONException e) {
@@ -123,9 +129,7 @@ public class LoginActivity extends BaseActivity {
                  }, new Response.ErrorListener() {
              @Override
              public void onErrorResponse(VolleyError error) {
-                 int duration = Toast.LENGTH_LONG;
-                 Toast toast = Toast.makeText(instance, getText(R.string.generic_error), duration);
-                 toast.show();
+                 Toast.makeText(getApplicationContext(), getText(R.string.generic_error), Toast.LENGTH_SHORT).show();
                  VolleyLog.e("Error: ", error.getMessage());
              }
          });
