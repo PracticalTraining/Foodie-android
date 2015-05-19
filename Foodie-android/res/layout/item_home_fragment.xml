@@ -20,7 +20,7 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/iv_restrant_icon"
         android:singleLine="true"
-        android:text="餐馆名称"
+        android:text="restrant name"
         android:layout_marginLeft="10dp"
         
         android:textSize="20sp" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_restrant_name"
         android:layout_toRightOf="@id/iv_restrant_icon"
-        android:text="描述"
+        android:text="desc"
         android:textSize="18sp" />
 
 </RelativeLayout>

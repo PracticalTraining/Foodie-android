@@ -8,7 +8,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="餐馆信息r"
+            android:text="restrant info "
             android:textColor="#ffffff"
             android:gravity="center_vertical"
         android:background="@drawable/android_title_bg" 

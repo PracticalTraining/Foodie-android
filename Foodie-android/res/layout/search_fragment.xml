@@ -3,8 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <TextView  android:layout_width="fill_parent"
+
+    <TextView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="search fragment"/>
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/android_title_bg"
+        android:gravity="center_vertical"
+        android:text="restrant list"
+        android:textColor="#ffffff"
+        android:textSize="15.0dip" />
+
+    <ListView
+        android:id="@+id/lv_retrant_fragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
 </LinearLayout>

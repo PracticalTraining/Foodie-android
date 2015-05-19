@@ -58,6 +58,7 @@
             android:launchMode="singleTop" >
         </activity>
         <activity android:name="cn.edu.bjtu.foodie_android.LocationActivity"></activity>
+        <activity android:name="cn.edu.bjtu.foodie_android.UI.DishActivity"></activity>
     </application>
 
 </manifest>

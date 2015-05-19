@@ -1,5 +1,6 @@
 package cn.edu.bjtu.foodie_android.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.bjtu.foodie_android.R;
+import cn.edu.bjtu.foodie_android.UI.DishActivity;
 
-public class HomeFragment extends Fragment {
-	private ListView lv_home_fragment;
+public class OrderFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +28,9 @@ public class HomeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = View.inflate(getActivity(), R.layout.home_fragment, null);
-		lv_home_fragment = (ListView) view.findViewById(R.id.lv_home_fragment);
+		View view = View.inflate(getActivity(), R.layout.search_fragment, null);
+		ListView lv_home_fragment = (ListView) view
+				.findViewById(R.id.lv_retrant_fragment);
 		MyRestrantAdapter adapter = new MyRestrantAdapter();
 		lv_home_fragment.setAdapter(adapter);
 		lv_home_fragment.setOnItemClickListener(new OnItemClickListener() {
@@ -36,14 +38,8 @@ public class HomeFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// TODO Auto-generated method stub
-
-				RestrantDetailInfoFragment restrantDetailInfoFragment = new RestrantDetailInfoFragment();
-				getActivity()
-						.getSupportFragmentManager()
-						.beginTransaction()
-						.replace(R.id.ll_mid_content,
-								restrantDetailInfoFragment).commit();
+				Intent intent = new Intent(getActivity(), DishActivity.class);
+				startActivity(intent);
 			}
 		});
 		return view;
@@ -81,8 +77,8 @@ public class HomeFragment extends Fragment {
 			View view;
 			ViewHolder holder;
 			if (convertView == null) {
-				view = View.inflate(getActivity(), R.layout.item_home_fragment,
-						null);
+				view = View
+						.inflate(getActivity(), R.layout.item_restrant, null);
 				holder = new ViewHolder();
 				view.setTag(holder);
 			} else {
@@ -97,7 +93,7 @@ public class HomeFragment extends Fragment {
 					.findViewById(R.id.tv_restrant_desc);
 			holder.iv_restrant_icon.setImageResource(R.drawable.app_icon);
 			holder.tv_restrant_name.setText("restrant name");
-			holder.tv_restrant_desc.setText("restrant desc");
+			holder.tv_restrant_desc.setText("order dishes");
 			return view;
 		}
 

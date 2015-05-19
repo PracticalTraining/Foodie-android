@@ -7,7 +7,7 @@ import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.fragment.CategoryFragment;
 import cn.edu.bjtu.foodie_android.fragment.HomeFragment;
 import cn.edu.bjtu.foodie_android.fragment.MyAccountFragment;
-import cn.edu.bjtu.foodie_android.fragment.SearchFragment;
+import cn.edu.bjtu.foodie_android.fragment.OrderFragment;
 
 public class HomeActivity extends BaseActivity {
 	// private RadioGroup home_radio_button_group;
@@ -48,7 +48,7 @@ public class HomeActivity extends BaseActivity {
 									.commit();
 							break;
 						case R.id.home_tab_search:
-							SearchFragment searchFragment = new SearchFragment();
+							OrderFragment searchFragment = new OrderFragment();
 							getSupportFragmentManager()
 									.beginTransaction()
 									.replace(R.id.ll_mid_content,
