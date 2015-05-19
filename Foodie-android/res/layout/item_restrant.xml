@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/iv_restrant_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/app_icon" />
+
+    <TextView
+        android:id="@+id/tv_restrant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/iv_restrant_icon"
+        android:singleLine="true"
+        android:text="restrant name"
+        android:layout_marginLeft="10dp"
+        
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_restrant_desc"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_restrant_name"
+        android:layout_toRightOf="@id/iv_restrant_icon"
+        android:text="order dishes "
+        android:textSize="18sp" />
+
+</RelativeLayout>
