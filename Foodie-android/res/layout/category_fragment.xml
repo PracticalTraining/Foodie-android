@@ -1,10 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <TextView  android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="category fragment"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/android_title_bg"
+        android:gravity="center_vertical"
+        android:text="附近的餐馆"
+        android:textColor="#ffffff"
+        android:textSize="15.0dip" />
+    
+    <ListView 
+        android:layout_below="@id/tv_title"
+        android:id="@+id/lv_near_restrant"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        ></ListView>
+    <LinearLayout 
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:id="@+id/ll_loading"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        
+        android:orientation="vertical">
+        <ProgressBar 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="数据正在加载ing"
+        android:textSize="15.0dip" />
+        
+    </LinearLayout>
+
+
+</RelativeLayout>

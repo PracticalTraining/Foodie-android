@@ -10,6 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import cn.edu.bjtu.foodie_android.R;
 
+import com.baidu.mapapi.SDKInitializer;
+
 public class SplashActivity extends Activity {
 
 	private ImageView mSplashItem_iv;
@@ -18,6 +20,8 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		SDKInitializer.initialize(getApplicationContext());
+
 		setContentView(R.layout.activity_splash);
 		findViewById();
 		initView();

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapView;
 
 public class LocationActivity extends Activity {
@@ -15,7 +14,6 @@ public class LocationActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		SDKInitializer.initialize(getApplicationContext());
 
 		setContentView(R.layout.activity_location);
 		mMapView = (MapView) findViewById(R.id.bmapView);

@@ -20,20 +20,20 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/iv_restrant_icon"
         android:singleLine="true"
-        android:text="restrant name"
+        android:text="餐馆名称"
         android:layout_marginLeft="10dp"
         
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/tv_restrant_desc"
+        android:id="@+id/tv_restrant_address"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_restrant_name"
         android:layout_toRightOf="@id/iv_restrant_icon"
-        android:text="order dishes "
-        android:textSize="14sp" />
+        android:text="餐馆地址 "
+        android:textSize="18sp" />
 
 </RelativeLayout>

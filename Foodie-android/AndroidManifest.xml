@@ -29,7 +29,7 @@
         android:theme="@style/AppTheme" android:name=".manager.ApplicationController">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="0y1K6LTO0zREgL2EfvvsotNH" />
+            android:value="lpxXGy0TYoolaKfHyhP6Bc3A" />
 
         <activity
             android:name="cn.edu.bjtu.foodie_android.UI.SplashActivity"
@@ -59,6 +59,7 @@
         </activity>
         <activity android:name="cn.edu.bjtu.foodie_android.LocationActivity"></activity>
         <activity android:name="cn.edu.bjtu.foodie_android.UI.DishActivity"></activity>
+        <activity android:name="cn.edu.bjtu.foodie_android.NearRestrantActivity"></activity>
     </application>
 
 </manifest>
