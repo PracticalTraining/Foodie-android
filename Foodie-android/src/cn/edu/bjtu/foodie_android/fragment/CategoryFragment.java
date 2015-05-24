@@ -42,6 +42,7 @@ public class CategoryFragment extends Fragment {
 	private LinearLayout ll_loading;
 	private final int SCUESS = 1;
 	private final int FAILED = 2;
+	private final int NETWORK_ERROR = 3;
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -98,11 +99,12 @@ public class CategoryFragment extends Fragment {
 					final PoiSearch poiSarch = PoiSearch.newInstance();
 					new Thread(new Runnable() {
 
+						private Message message;
+
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
 							OnGetPoiSearchResultListener listener = new OnGetPoiSearchResultListener() {
-								private Message message;
 
 								@Override
 								public void onGetPoiResult(PoiResult result) {
@@ -129,11 +131,13 @@ public class CategoryFragment extends Fragment {
 							LatLng loc = new LatLng(GlobalParams.LAT,
 									GlobalParams.LONG);
 							option.location(loc);
-							option.radius(2000);
+							option.radius(10000);
+							option.pageCapacity(100);
 							poiSarch.searchNearby(option);
 							poiSarch.setOnGetPoiSearchResultListener(listener);
 						}
 					}).start();
+
 				}
 			}
 		});
@@ -146,19 +150,17 @@ public class CategoryFragment extends Fragment {
 				PoiInfo poiInfo = allPoi.get(position);
 				double lat = poiInfo.location.latitude;
 				double lon = poiInfo.location.longitude;
+				String city = poiInfo.city;
 				Intent intent = new Intent(getActivity(),
 						NearRestrantActivity.class);
 				intent.putExtra("lat", lat);
 				intent.putExtra("lon", lon);
 				intent.putExtra("name", poiInfo.name);
+				intent.putExtra("city", city);
 				startActivity(intent);
 			}
 		});
 		return view;
-	}
-
-	private void search(final String key) {
-
 	}
 
 	class RestrantAdpter extends BaseAdapter {

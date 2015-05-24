@@ -32,7 +32,6 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		mLocClient = new LocationClient(this);
 		myListener = new MyLocationListenner();
-		GlobalParams.LOCATIONCLIENT = mLocClient;
 		// 定位
 		LocationClientOption option = new LocationClientOption();
 		option.setLocationMode(LocationMode.Hight_Accuracy);// 设置定位模式
@@ -42,9 +41,9 @@ public class SplashActivity extends Activity {
 		option.setNeedDeviceDirect(true);// 返回的定位结果包含手机机头的方向
 		option.setOpenGps(true);// 打开gps
 		option.SetIgnoreCacheException(true);
-		GlobalParams.LOCATIONCLIENT.setLocOption(option);
-		GlobalParams.LOCATIONCLIENT.registerLocationListener(myListener);
-		GlobalParams.LOCATIONCLIENT.start();
+		mLocClient.setLocOption(option);
+		mLocClient.registerLocationListener(myListener);
+		mLocClient.start();
 		findViewById();
 		initView();
 	}
@@ -110,6 +109,6 @@ public class SplashActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		mLocClient.unRegisterLocationListener(myListener);
-		GlobalParams.LOCATIONCLIENT.stop();
+		mLocClient.stop();
 	}
 }

@@ -52,6 +52,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="8"
+                android:editable="false"
                    android:background="@drawable/mm_title_btn_pressed"
                 android:hint="终点" />
 
