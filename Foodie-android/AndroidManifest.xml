@@ -73,7 +73,8 @@
         </activity>
         <activity
             android:name="cn.edu.bjtu.foodie_android.UI.HomeActivity"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop" 
+            >
         </activity>
         <activity
             android:name="cn.edu.bjtu.foodie_android.UI.MyAccountActivity"
@@ -91,7 +92,8 @@
         </activity>
         <activity android:name="cn.edu.bjtu.foodie_android.UI.DishActivity" >
         </activity>
-        <activity android:name="cn.edu.bjtu.foodie_android.NearRestrantActivity" >
+        <activity android:name="cn.edu.bjtu.foodie_android.NearRestrantActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
 
         <service android:name="cn.edu.bjtu.foodie_android.service.ListenNetStateService" >
