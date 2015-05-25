@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.global.GlobalParams;
+import cn.edu.bjtu.foodie_android.service.ListenNetStateService;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -45,6 +46,9 @@ public class SplashActivity extends Activity {
 		mLocClient.registerLocationListener(myListener);
 		mLocClient.start();
 		findViewById();
+		Intent intent = new Intent(getApplicationContext(),
+				ListenNetStateService.class);
+		startService(intent);
 		initView();
 	}
 
