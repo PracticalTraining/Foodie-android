@@ -6,12 +6,15 @@ public class Dish {
 	private int type;
 	private String name;
 	private int price;
+	private	int	restId;
 
-	public Dish(int type, String name, int price) {
+	public Dish(int type, String name, int price, int restId) {
 		super();
 		this.type = type;
 		this.name = name;
 		this.price = price;
+		this.restId	= restId;
+
 	}
 
 	public int getType() {
@@ -36,6 +39,9 @@ public class Dish {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	public int getRestId() {
+		return restId;
 	}
 
 }

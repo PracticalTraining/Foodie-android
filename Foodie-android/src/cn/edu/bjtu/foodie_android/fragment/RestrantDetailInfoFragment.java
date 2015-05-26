@@ -1,5 +1,6 @@
 package cn.edu.bjtu.foodie_android.fragment;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,8 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,12 +29,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import cn.edu.bjtu.foodie_android.LocationActivity;
 import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.UI.LoginActivity;
 import cn.edu.bjtu.foodie_android.UI.MyAccountActivity;
 import cn.edu.bjtu.foodie_android.manager.ApplicationController;
+import cn.edu.bjtu.foodie_android.utils.CustomRequest;
 
 public class RestrantDetailInfoFragment extends Fragment {
 
@@ -41,7 +49,15 @@ public class RestrantDetailInfoFragment extends Fragment {
 	public	String 	status;
 	public	int		queueNum;
     SharedPreferences settings;
-
+    int				restId;
+    Button 			btnCalendar;
+    Button			btnTimePicker;
+    EditText 		txtDate;
+    EditText		txtTime;
+    String			full_date;
+ 
+    // Variable for storing current date and time
+    private int mYear, mMonth, mDay, mHour, mMinute;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +72,21 @@ public class RestrantDetailInfoFragment extends Fragment {
 		view = View.inflate(getActivity(), R.layout.restrant_detail_info, null);
 		order = (Button) view.findViewById(R.id.order);
 		location = (Button) view.findViewById(R.id.location);
+		btnCalendar = (Button) view.findViewById(R.id.btnCalendar);
+        btnTimePicker = (Button) view.findViewById(R.id.btnTimePicker);
+        txtDate = (EditText) view.findViewById(R.id.txtDate);
+        txtTime = (EditText) view.findViewById(R.id.txtTime);
+        TextView	tRestName			=	(TextView) view.findViewById(R.id.restaurantName);
+	    TextView	tRestDescription	=	(TextView) view.findViewById(R.id.restaurantDescription);
+		
+        Bundle bundle = this.getArguments();
+		if (bundle != null) {
+		    restId = bundle.getInt("restId", 0);
+			Log.d("RestaurantText:", bundle.getString("restName") + "+" + bundle.getString("restDescription"));
+		    tRestName.setText(bundle.getString("restName"));
+		    tRestDescription.setText(bundle.getString("restDescription"));
+		    
+		}
 		location.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -74,11 +105,64 @@ public class RestrantDetailInfoFragment extends Fragment {
 				boolean		login	=	settings.getBoolean("login", false);
 				
 				if (login == true)
-					bookRequest(6, 2,"11");
+					bookRequest(settings.getString("foodieId", "0"), String.valueOf(restId), full_date);
 				if (login == false)
                    	Toast.makeText(getActivity(), getText(R.string.no_user), Toast.LENGTH_SHORT).show();
 			}
 		});
+		 btnCalendar.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// Process to get Current Date
+		            final Calendar c = Calendar.getInstance();
+		            mYear = c.get(Calendar.YEAR);
+		            mMonth = c.get(Calendar.MONTH);
+		            mDay = c.get(Calendar.DAY_OF_MONTH);
+		 
+		            // Launch Date Picker Dialog
+		            DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+		                    new DatePickerDialog.OnDateSetListener() {
+		 
+		                        @Override
+		                        public void onDateSet(DatePicker view, int year,
+		                                int monthOfYear, int dayOfMonth) {
+		                            // Display Selected date in textbox
+		                            txtDate.setText(dayOfMonth + "-"
+		                                    + (monthOfYear + 1) + "-" + year);
+		 
+		                        }
+		                    }, mYear, mMonth, mDay);
+		            dpd.show();				
+				}});
+	        
+	        btnTimePicker.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// Process to get Current Time
+		            final Calendar c = Calendar.getInstance();
+		            mHour = c.get(Calendar.HOUR_OF_DAY);
+		            mMinute = c.get(Calendar.MINUTE);
+		 
+		            // Launch Time Picker Dialog
+		            TimePickerDialog tpd = new TimePickerDialog(getActivity(),
+		                    new TimePickerDialog.OnTimeSetListener() {
+		 
+		                        @Override
+		                        public void onTimeSet(TimePicker view, int hourOfDay,
+		                                int minute) {
+		                            // Display Selected time in textbox
+		                            txtTime.setText(hourOfDay + ":" + minute);
+		                        }
+		                    }, mHour, mMinute, false);
+		           /* full_date = String.valueOf(mYear) + "-" + String.valueOf(mMonth) + "-" 
+		                    	+ String.valueOf(mDay) + " " + String.valueOf(mHour) + ":" 
+		                    	+ String.valueOf(mMinute) + ":00";*/
+		            full_date = String.valueOf(mYear) + String.valueOf(mMonth)  
+	                    	+ String.valueOf(mDay)  + String.valueOf(mHour)  
+	                    	+ String.valueOf(mMinute) + "00";
+		            Log.d("fullDate", full_date);
+		            tpd.show();				
+				}});
 		
 		return view;
 	}
@@ -89,49 +173,58 @@ public class RestrantDetailInfoFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 	}
 	
-	void				bookRequest(int foodieId, int restId, String time) {
-      
+void	bookRequest(String foodieId, String restId, String time) {
+		
 		String						url 	= getString(R.string.URL) + "book";
-		Date						date	= new Date();					
-		Map<String, String> 	params 		= new HashMap<String, String>();
+		Map<String, String> 		params 	= new HashMap<String, String>();
 		
-		params.put("foodieId", String.valueOf(foodieId));
+		params.put("time", time);
 		params.put("restId", String.valueOf(restId));
-		Log.d("Time Test:", date.toString());
-		params.put("time", date.toString());
+		params.put("foodieId", foodieId);
+		Log.d("Params:", params.toString());
 		
-		 JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params),
-                 new Response.Listener<JSONObject>() {
-                     @Override
-                     public void onResponse(JSONObject response) {
-                         try {
-                             VolleyLog.v("Response:%s%n", response.toString(4));
-                             Log.d("Request Result: ", response.toString());
-                             if (response.has("booknumber")){
-                                 Toast.makeText(getActivity(), getText(R.string.booking_successful), Toast.LENGTH_SHORT).show();
-                                 SharedPreferences.Editor editor		=	settings.edit();
-                                 editor.putInt("booknumber", response.getInt("booknumber"));
-                                 editor.commit();
-                              }
-                             if (response.getInt("errorCode") == -1) {
-                                 Toast.makeText(getActivity(), getText(R.string.generic_error), Toast.LENGTH_SHORT).show();
-                             }
-                             if (response.getInt("errorCode") == -2) {
-                                 Toast.makeText(getActivity(), getText(R.string.bad_parameters), Toast.LENGTH_SHORT).show();
-                             }
-                            
-                         } catch (JSONException e) {
-                             e.printStackTrace();
-                         }
-                     }
-                 }, new Response.ErrorListener() {
-             @Override
-             public void onErrorResponse(VolleyError error) {
-                 Toast.makeText(getActivity(), getText(R.string.no_internet), Toast.LENGTH_SHORT).show();
-                 VolleyLog.e("Error: ", error.getMessage());
-             }
-            
-         });
-         ApplicationController.getInstance().addToRequestQueue(req, "Book");
+		CustomRequest jsObjRequest = new CustomRequest(Method.POST, url, params, this.createMyReqSuccessListener(), this.createMyReqErrorListener());
+        ApplicationController.getInstance().addToRequestQueue(jsObjRequest, "Book");
+
 	}
+	
+	private Response.Listener<JSONObject> createMyReqSuccessListener() {
+        return new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+            	 try {
+                     VolleyLog.v("Response:%s%n", response.toString(4));
+                     Log.d("Request Result: ", response.toString());
+                     if (response.has("booknumber")){
+                         Toast.makeText(getActivity(), getText(R.string.booking_successful), Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getActivity(), "booknumber: " + response.getString("booknumber"), Toast.LENGTH_LONG).show();
+                         SharedPreferences.Editor editor		=	settings.edit();
+                         editor.putInt("booknumber", response.getInt("booknumber"));
+                         editor.commit();
+                      }
+                     if (response.has("errorCode"))
+                     {
+                    	 if (response.getInt("errorCode") == -1) {
+                    		 Toast.makeText(getActivity(), getText(R.string.generic_error), Toast.LENGTH_SHORT).show();
+                    	 }
+                    	 if (response.getInt("errorCode") == -2) {
+                    		 Toast.makeText(getActivity(), getText(R.string.bad_parameters), Toast.LENGTH_SHORT).show();
+                    	 }
+                     } 
+                 } catch (JSONException e) {
+                     e.printStackTrace();
+                 }
+            };
+        };
+    }
+
+    private Response.ErrorListener createMyReqErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            	Toast.makeText(getActivity(), getText(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        };
+    }
 }

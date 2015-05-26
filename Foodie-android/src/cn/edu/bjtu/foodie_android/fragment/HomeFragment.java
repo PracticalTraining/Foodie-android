@@ -21,13 +21,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.bean.Restaurant;
+import cn.edu.bjtu.foodie_android.manager.ApplicationController;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
@@ -48,14 +51,22 @@ public class HomeFragment extends Fragment {
 		// TODO Auto-generated method stub
 		View view = View.inflate(getActivity(), R.layout.home_fragment, null);
 		lv_home_fragment = (ListView) view.findViewById(R.id.lv_home_fragment);
-		initData();
-
+		MyRestrantAdapter adapter = new MyRestrantAdapter();
+		lv_home_fragment.setAdapter(adapter);
+		
 		lv_home_fragment.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				RestrantDetailInfoFragment restrantDetailInfoFragment = new RestrantDetailInfoFragment();
+				Bundle bundle = new Bundle();
+
+				bundle.putInt("restId", ApplicationController.getInstance().getRestaurant_list().get(position).getId());
+				bundle.putString("restName", ApplicationController.getInstance().getRestaurant_list().get(position).getName());
+				bundle.putString("restDescription", ApplicationController.getInstance().getRestaurant_list().get(position).getDescription());
+				bundle.putString("restPicUrl", ApplicationController.getInstance().getRestaurant_list().get(position).getPictureUrl());
+				restrantDetailInfoFragment.setArguments(bundle);
 				getActivity()
 						.getSupportFragmentManager()
 						.beginTransaction()
@@ -69,35 +80,6 @@ public class HomeFragment extends Fragment {
 	/**
 	 * 获得餐馆信息
 	 */
-	private void initData() {
-		// TODO Auto-generated method stub
-		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-		JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-				Request.Method.GET,
-				"http://123.57.36.82/foodie/ws/restaurant/searchall", null,
-				new Listener<JSONObject>() {
-
-					@Override
-					public void onResponse(JSONObject arg0) {
-						try {
-							restaurants = parseJson(arg0);
-							adapter = new MyRestrantAdapter(restaurants);
-							lv_home_fragment.setAdapter(adapter);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError arg0) {
-						// TODO Auto-generated method stub
-						Toast.makeText(getActivity(), "shibai", 0).show();
-					}
-				});
-		requestQueue.add(jsonObjectRequest);
-	}
 
 	/**
 	 * 解析获取到的json字符串
@@ -125,36 +107,29 @@ public class HomeFragment extends Fragment {
 	}
 
 	class MyRestrantAdapter extends BaseAdapter {
-		private ArrayList<Restaurant> restaurants;
-
-		public MyRestrantAdapter(ArrayList<Restaurant> restaurants) {
-			super();
-			this.restaurants = restaurants;
-		}
-
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
-			return restaurants.size();
+			return ApplicationController.getInstance().getRestaurant_list().size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO Auto-generated method stub
-			return null;
+			return ApplicationController.getInstance().getRestaurant_list().get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
 			// TODO Auto-generated method stub
-			return 0;
+			return position;
 		}
-
+		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			View view;
 			ViewHolder holder;
+			ImageLoader			mImageLoader = ApplicationController.getInstance().getImageLoader();
+
 			if (convertView == null) {
 				view = View.inflate(getActivity(), R.layout.item_home_fragment,
 						null);
@@ -164,7 +139,7 @@ public class HomeFragment extends Fragment {
 				view = convertView;
 				holder = (ViewHolder) view.getTag();
 			}
-			holder.iv_restrant_icon = (ImageView) view
+			holder.iv_restrant_icon = (NetworkImageView) view
 					.findViewById(R.id.iv_restrant_icon);
 			holder.tv_restrant_name = (TextView) view
 					.findViewById(R.id.tv_restrant_name);
@@ -173,16 +148,17 @@ public class HomeFragment extends Fragment {
 			holder.iv_restrant_icon.setImageResource(R.drawable.app_icon);
 			// holder.tv_restrant_name.setText("restrant name");
 			// holder.tv_restrant_desc.setText("restrant desc");
-			Restaurant restaurant = restaurants.get(position);
-			holder.tv_restrant_name.setText(restaurant.getName());
-			holder.tv_restrant_desc.setText(restaurant.getDescription());
+			holder.iv_restrant_icon.setImageUrl(ApplicationController.getInstance().getRestaurant_list().get(position).getPictureUrl() 
+					,mImageLoader);
+			holder.tv_restrant_name.setText(ApplicationController.getInstance().getRestaurant_list().get(position).getName());
+			holder.tv_restrant_desc.setText(ApplicationController.getInstance().getRestaurant_list().get(position).getDescription());
 			return view;
 		}
 
 	}
 
 	class ViewHolder {
-		ImageView iv_restrant_icon;
+		NetworkImageView iv_restrant_icon;
 		TextView tv_restrant_name;
 		TextView tv_restrant_desc;
 	}

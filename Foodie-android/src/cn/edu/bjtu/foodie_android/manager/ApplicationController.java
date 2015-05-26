@@ -1,14 +1,23 @@
 package cn.edu.bjtu.foodie_android.manager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.HttpRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import cn.edu.bjtu.foodie_android.bean.Dish;
+import cn.edu.bjtu.foodie_android.bean.Restaurant;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 
 public class ApplicationController extends Application {
@@ -17,14 +26,31 @@ public class ApplicationController extends Application {
 
 	    private RequestQueue mRequestQueue;
 
-	    private static          ApplicationController           sInstance;
+	    private static         	ApplicationController           sInstance;
 	    private                 DefaultHttpClient               mHttpClient;
-	    private static          HttpRequest                     my_httpRequest;
+	    private          		HttpRequest                     my_httpRequest;
+	    private					List<Dish>						dish_list;
+	    private					List<Restaurant>				restaurant_list;
+	    private 				ImageLoader 					imageLoader;
 
 
 	    @Override
 	    public void onCreate() {
 	        super.onCreate();
+	        this.dish_list			=	new ArrayList<Dish>();
+	        this.restaurant_list	=	new ArrayList<Restaurant>();
+	        imageLoader = new ImageLoader(this.getRequestQueue(), new ImageLoader.ImageCache() {
+	            private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
+	            @Override
+	            public Bitmap getBitmap(String url) {
+	                return cache.get(url);
+	            }
+	 
+	            @Override
+	            public void putBitmap(String url, Bitmap bitmap) {
+	                cache.put(url, bitmap);
+	            }
+	        });
 	        // initialize the singleton
 	        sInstance = this;
 	    }
@@ -79,6 +105,34 @@ public class ApplicationController extends Application {
 	        }
 	    }
 
+	    public  List<Dish> getDish_list() {
+			return dish_list;
+		}
 
+		public void setDish_list(List<Dish> dish_list) {
+			this.dish_list = dish_list;
+		}
+
+		public List<Restaurant> getRestaurant_list() {
+			return restaurant_list;
+		}
+
+		public void setRestaurant_list(List<Restaurant> restaurant_list) {
+			this.restaurant_list = restaurant_list;
+		}
+	    
+		public List<Dish>	getDishByRestId(int restId) {
+			List<Dish>		restDishList	=	new ArrayList<Dish>();
+			
+			for (int i = 0; i < dish_list.size(); i++) {
+				if (dish_list.get(i).getRestId() == restId) 
+					restDishList.add(dish_list.get(i));
+			}		
+			return restDishList;
+			
+		}
+		 public ImageLoader getImageLoader() {
+		        return imageLoader;
+		    }
 
 }

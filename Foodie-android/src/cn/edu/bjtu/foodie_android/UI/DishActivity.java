@@ -1,8 +1,10 @@
 package cn.edu.bjtu.foodie_android.UI;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +17,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.bean.Dish;
+import cn.edu.bjtu.foodie_android.manager.ApplicationController;
 
 public class DishActivity extends Activity {
-	private ArrayList<Dish> list;
+	private  List<Dish> list;
 	private ListView lv_dish;
 
 	@Override
@@ -33,14 +36,17 @@ public class DishActivity extends Activity {
 	}
 
 	private void initData() {
+		Intent intent = getIntent();
 		list = new ArrayList<Dish>();
+		List<Dish> 		restDishList=	new ArrayList<Dish>();
+		restDishList				=	ApplicationController.getInstance().getDishByRestId(intent.getIntExtra("restId", 0));
 		Dish dish;
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < restDishList.size(); i++) {
 			if (i % 2 == 0) {
-				dish = new Dish(Dish.TYPE_NOCHECKED, i + "号位", i);
+				dish = new Dish(Dish.TYPE_NOCHECKED, restDishList.get(i).getName(), restDishList.get(i).getPrice(), restDishList.get(i).getRestId());
 				list.add(dish);
 			} else {
-				dish = new Dish(Dish.TYPE_CHECKED, i + "号位", i);
+				dish = new Dish(Dish.TYPE_CHECKED, restDishList.get(i).getName(), restDishList.get(i).getPrice(), restDishList.get(i).getRestId());
 				list.add(dish);
 			}
 		}
@@ -55,12 +61,12 @@ public class DishActivity extends Activity {
 
 		@Override
 		public Object getItem(int arg0) {
-			return null;
+			return list.get(arg0);
 		}
 
 		@Override
 		public long getItemId(int arg0) {
-			return 0;
+			return arg0;
 		}
 
 		@Override
@@ -109,4 +115,5 @@ public class DishActivity extends Activity {
 		TextView tv_dish_price;
 		CheckBox checkBox;
 	}
+
 }

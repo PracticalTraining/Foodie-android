@@ -100,31 +100,37 @@ public class LoginActivity extends BaseActivity {
                          try {
                              VolleyLog.v("Response:%s%n", response.toString(4));
                              Log.d("Response:", response.toString());
-                             if (response.has("id")) {
-                                 Toast.makeText(instance, getText(R.string.login_success), Toast.LENGTH_SHORT).show();
+                             if (response.has("foodieid")) {
+                                 Toast.makeText(getApplicationContext(), getText(R.string.login_success), Toast.LENGTH_SHORT).show();
                                  editor.putBoolean("login", true);
+                                 editor.putString("foodieId", response.getString("foodieid"));
                                  editor.commit();
                                  Intent intent = new Intent(LoginActivity.this, MyAccountActivity.class);
                                  startActivity(intent);
-                             } 
-                             if (response.getString("errorCode").equals("-1")) {
+                             }
+                             if (response.has("errorCode"))
+                             {
+                            	 if (response.getString("errorCode").equals("-1")) {
                                          int duration = Toast.LENGTH_LONG;
                                          Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.user_not_exists), duration);
                                          toast.show();
                                  }
-                             if (response.getInt("errorCode") == -2) {
+                            	 if (response.getInt("errorCode") == -2) {
                                          int duration = Toast.LENGTH_LONG;
                                          Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.password_incorect), duration);
                                          toast.show();
-                             }
-                             if (response.getInt("errorCode") == -3) {
-                                 int duration = Toast.LENGTH_LONG;
-                                 Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.bad_parameters), duration);
-                                 toast.show();
-                     }
+                            	 }
+                            	 if (response.getInt("errorCode") == -3) {
+                            		 	int duration = Toast.LENGTH_LONG;
+                            		 	Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.bad_parameters), duration);
+                            		 	toast.show();
+                            	 }
+                            }
+                             
                          } catch (JSONException e) {
                              e.printStackTrace();
                          }
+
                      }
                  }, new Response.ErrorListener() {
              @Override
