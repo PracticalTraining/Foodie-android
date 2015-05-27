@@ -20,7 +20,7 @@ import cn.edu.bjtu.foodie_android.bean.Dish;
 import cn.edu.bjtu.foodie_android.manager.ApplicationController;
 
 public class DishActivity extends Activity {
-	private  List<Dish> list;
+	private List<Dish> list;
 	private ListView lv_dish;
 
 	@Override
@@ -30,23 +30,28 @@ public class DishActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_dish);
 		lv_dish = (ListView) findViewById(R.id.lv_dish);
-		initData();
 		DishAdapter adapter = new DishAdapter();
+		initData();
 		lv_dish.setAdapter(adapter);
 	}
 
 	private void initData() {
 		Intent intent = getIntent();
 		list = new ArrayList<Dish>();
-		List<Dish> 		restDishList=	new ArrayList<Dish>();
-		restDishList				=	ApplicationController.getInstance().getDishByRestId(intent.getIntExtra("restId", 0));
+		List<Dish> restDishList = new ArrayList<Dish>();
+		restDishList = ApplicationController.getInstance().getDishByRestId(
+				intent.getIntExtra("restId", 0));
 		Dish dish;
 		for (int i = 0; i < restDishList.size(); i++) {
 			if (i % 2 == 0) {
-				dish = new Dish(Dish.TYPE_NOCHECKED, restDishList.get(i).getName(), restDishList.get(i).getPrice(), restDishList.get(i).getRestId());
+				dish = new Dish(Dish.TYPE_NOCHECKED, restDishList.get(i)
+						.getName(), restDishList.get(i).getPrice(),
+						restDishList.get(i).getRestId());
 				list.add(dish);
 			} else {
-				dish = new Dish(Dish.TYPE_CHECKED, restDishList.get(i).getName(), restDishList.get(i).getPrice(), restDishList.get(i).getRestId());
+				dish = new Dish(Dish.TYPE_CHECKED, restDishList.get(i)
+						.getName(), restDishList.get(i).getPrice(),
+						restDishList.get(i).getRestId());
 				list.add(dish);
 			}
 		}
