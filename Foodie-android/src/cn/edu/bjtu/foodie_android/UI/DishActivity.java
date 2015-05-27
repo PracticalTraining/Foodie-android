@@ -7,14 +7,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.bean.Dish;
 import cn.edu.bjtu.foodie_android.manager.ApplicationController;
@@ -22,6 +25,12 @@ import cn.edu.bjtu.foodie_android.manager.ApplicationController;
 public class DishActivity extends Activity {
 	private List<Dish> list;
 	private ListView lv_dish;
+	int count = 0;
+	private List<Dish> restDishList;
+	private DishAdapter adapter;
+	private int totalMoney = 0;
+	private TextView tv_money;
+	private Button btn_commit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,30 +39,34 @@ public class DishActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_dish);
 		lv_dish = (ListView) findViewById(R.id.lv_dish);
-		DishAdapter adapter = new DishAdapter();
+		tv_money = (TextView) findViewById(R.id.tv_money);
+		btn_commit = (Button) findViewById(R.id.btn_commit);
+		adapter = new DishAdapter();
 		initData();
 		lv_dish.setAdapter(adapter);
+		btn_commit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getApplicationContext(), totalMoney + "", 0)
+						.show();
+			}
+		});
 	}
 
 	private void initData() {
 		Intent intent = getIntent();
 		list = new ArrayList<Dish>();
-		List<Dish> restDishList = new ArrayList<Dish>();
+		restDishList = new ArrayList<Dish>();
 		restDishList = ApplicationController.getInstance().getDishByRestId(
 				intent.getIntExtra("restId", 0));
 		Dish dish;
 		for (int i = 0; i < restDishList.size(); i++) {
-			if (i % 2 == 0) {
-				dish = new Dish(Dish.TYPE_NOCHECKED, restDishList.get(i)
-						.getName(), restDishList.get(i).getPrice(),
-						restDishList.get(i).getRestId());
-				list.add(dish);
-			} else {
-				dish = new Dish(Dish.TYPE_CHECKED, restDishList.get(i)
-						.getName(), restDishList.get(i).getPrice(),
-						restDishList.get(i).getRestId());
-				list.add(dish);
-			}
+			dish = new Dish(Dish.TYPE_NOCHECKED, restDishList.get(i).getName(),
+					restDishList.get(i).getPrice(), restDishList.get(i)
+							.getRestId());
+			list.add(dish);
 		}
 	}
 
@@ -101,6 +114,9 @@ public class DishActivity extends Activity {
 							} else {
 								list.get(position).setType(Dish.TYPE_NOCHECKED);
 							}
+							Dish dish = list.get(position);
+							totalMoney += dish.getPrice();
+							tv_money.setText(totalMoney + "");
 						}
 					});
 			viewHolder.tv_dish_name.setText(list.get(position).getName());

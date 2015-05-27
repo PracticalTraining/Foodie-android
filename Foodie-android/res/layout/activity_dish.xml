@@ -30,18 +30,29 @@
         android:background="#e6e6e6"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal" >
-
-        <TextView
+<TextView
             android:layout_width="0dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
-            android:text="total money:123"
+            android:text="total money:"
+            android:textColor="#000000"
+            android:textSize="15.0dip" />
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:text="123"
             android:textColor="#000000"
             android:textSize="15.0dip" />
         <Button
+            android:id="@+id/btn_commit"
               android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="0dp"
