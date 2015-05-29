@@ -80,8 +80,8 @@
             </FrameLayout>
 
             <TextView
+                android:id="@+id/restaurantName"
                 android:layout_width="wrap_content"
-               	android:id="@+id/restaurantName"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
@@ -89,55 +89,81 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/restaurantDescription"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:text="餐馆的描述信息"
                 android:textSize="18sp" />
 
-			<LinearLayout android:layout_width="match_parent"
-        	android:layout_height="wrap_content" android:id="@+id/linearLayout4">
-       		 <EditText android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:id="@+id/txtDate">
-            <requestFocus></requestFocus>
-       		 </EditText>
-       		 <Button android:layout_height="wrap_content"
-            android:layout_weight="0" android:id="@+id/btnCalendar" android:text="Calendar"
-            android:layout_width="100dp"></Button>
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/linearLayout1">
-        <EditText android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:id="@+id/txtTime">
-            <requestFocus></requestFocus>
-        </EditText>
-        <Button android:layout_height="wrap_content"
-            android:layout_weight="0" android:id="@+id/btnTimePicker"
-            android:text="Time Picker" android:layout_width="100dp"></Button>
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/txtDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <requestFocus>
+                    </requestFocus>
+                </EditText>
+
+                <Button
+                    android:id="@+id/btnCalendar"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Calendar" >
+                </Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <requestFocus>
+                    </requestFocus>
+                </EditText>
+
+                <Button
+                    android:id="@+id/btnTimePicker"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Time Picker" >
+                </Button>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
                 <Button
+                    android:id="@+id/order"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/btn_style_red"
-                    android:id="@+id/order"
                     android:text="order on line" />
 
                 <Button
+                    android:id="@+id/location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/btn_style_red"
-                    android:id="@+id/location"
                     android:text="location" />
             </LinearLayout>
         </LinearLayout>
