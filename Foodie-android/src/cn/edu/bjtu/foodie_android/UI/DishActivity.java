@@ -3,8 +3,12 @@ package cn.edu.bjtu.foodie_android.UI;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.nfc.FormatException;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +26,7 @@ import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.bean.Dish;
 import cn.edu.bjtu.foodie_android.manager.ApplicationController;
 
+@SuppressLint("NewApi")
 public class DishActivity extends Activity {
 	private List<Dish> list;
 	private ListView lv_dish;
@@ -46,11 +51,31 @@ public class DishActivity extends Activity {
 		lv_dish.setAdapter(adapter);
 		btn_commit.setOnClickListener(new OnClickListener() {
 
+			private NfcAdapter mNfcAdapter;
+
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Toast.makeText(getApplicationContext(), totalMoney + "", 0)
-						.show();
+				String totalMoneyStr = totalMoney + "";
+				try {
+					NdefMessage message = new NdefMessage(totalMoneyStr
+							.getBytes());
+					mNfcAdapter = NfcAdapter
+							.getDefaultAdapter(DishActivity.this);
+					if (mNfcAdapter == null) {
+						Toast.makeText(DishActivity.this,
+								"NFC is not available", Toast.LENGTH_LONG)
+								.show();
+						finish();
+						return;
+					}
+					mNfcAdapter.setNdefPushMessage(message, DishActivity.this,
+							null);
+
+				} catch (FormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}
