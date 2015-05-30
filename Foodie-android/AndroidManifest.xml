@@ -7,9 +7,6 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="21" />
-<uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true"/>
-
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
@@ -92,21 +89,13 @@
         <activity android:name="cn.edu.bjtu.foodie_android.LocationActivity" >
         </activity>
         <activity android:name="cn.edu.bjtu.foodie_android.UI.DishActivity" >
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="application/vnd.com.example.android.beam" />
-                
-            </intent-filter>
-                <meta-data android:name="android.nfc.action.TECH_DISCOVERED"
-android:resource="@xml/nfc_tech_filter" />
+   
         </activity>
         <activity
             android:name="cn.edu.bjtu.foodie_android.NearRestrantActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
+        <activity android:name="cn.edu.bjtu.foodie_android.UI.BlueToothActivity"></activity>
 
         <service android:name="cn.edu.bjtu.foodie_android.service.ListenNetStateService" >
         </service>

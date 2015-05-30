@@ -6,14 +6,14 @@ public class Dish {
 	private int type;
 	private String name;
 	private int price;
-	private	int	restId;
+	private int restId;
 
 	public Dish(int type, String name, int price, int restId) {
 		super();
 		this.type = type;
 		this.name = name;
 		this.price = price;
-		this.restId	= restId;
+		this.restId = restId;
 
 	}
 
@@ -40,8 +40,15 @@ public class Dish {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+
 	public int getRestId() {
 		return restId;
+	}
+
+	@Override
+	public String toString() {
+		return "Dish [type=" + type + ", name=" + name + ", price=" + price
+				+ "]";
 	}
 
 }

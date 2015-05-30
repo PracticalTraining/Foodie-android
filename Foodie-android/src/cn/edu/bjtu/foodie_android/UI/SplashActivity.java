@@ -37,7 +37,7 @@ public class SplashActivity extends Activity {
 	private ImageView mSplashItem_iv;
 	private LocationClient mLocClient;
 	private MyLocationListenner myListener;
-    public static final 		String  				PREFS_NAME 	= "Data";
+	public static final String PREFS_NAME = "Data";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class SplashActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		SDKInitializer.initialize(getApplicationContext());
 		setContentView(R.layout.activity_splash);
+
 		getRestaurantRequest();
 		getDishsRequest();
 		mLocClient = new LocationClient(this);
@@ -131,100 +132,130 @@ public class SplashActivity extends Activity {
 		mLocClient.unRegisterLocationListener(myListener);
 		mLocClient.stop();
 	}
-	public void	getDishsRequest() {
-		  String                  finalurl = getString(R.string.URL) + "dish/searchdish";
 
-	         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, finalurl, null,
-	                 new Response.Listener<JSONObject>() {
-	                     @Override
-	                     public void onResponse(JSONObject response) {
-	                         try {
-	                             VolleyLog.v("Response:%s%n", response.toString(4));
-	                             Log.d("Response:", response.toString());
-	                             if (response.has("dish")) {
-	                                for (int i = 0; i < response.getJSONArray("dish").length(); i++) {
-	                                    JSONObject 	jsonobject 	=  response.getJSONArray("dish").getJSONObject(i);
-	                                    Dish		my_dish			=	new Dish(0, jsonobject.getString("name"), jsonobject.getInt("price"),
-	                                    								jsonobject.getInt("restId"));
-	                                    
-	                                    ApplicationController.getInstance().getDish_list().add(my_dish);
-	                                }
-									Log.d("DishList:", ApplicationController.getInstance().getDish_list().toString());
+	public void getDishsRequest() {
+		String finalurl = getString(R.string.URL) + "dish/searchdish";
 
-	                             }
-	                             if (response.has("errorCode"))
-	                             {
-	                            	 if (response.getString("errorCode").equals("-1")) {
-	                                         int duration = Toast.LENGTH_LONG;
-	                                         Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.generic_error), duration);
-	                                         toast.show();
-	                                 }
-	                            }
-	                             
-	                         } catch (JSONException e) {
-	                             e.printStackTrace();
-	                         }
-	                     }
-	                 }, new Response.ErrorListener() {
-	             @Override
-	             public void onErrorResponse(VolleyError error) {
-	                 Toast.makeText(getApplicationContext(), getText(R.string.no_internet), Toast.LENGTH_SHORT).show();
-	                 VolleyLog.e("Error: ", error.getMessage());
-	             }
-	         });
-	          // add the request object to the queue to be executed                                                                                                                                              
-	          ApplicationController.getInstance().addToRequestQueue(req, "getDish");
+		JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,
+				finalurl, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						try {
+							VolleyLog.v("Response:%s%n", response.toString(4));
+							Log.d("Response:", response.toString());
+							if (response.has("dish")) {
+								for (int i = 0; i < response.getJSONArray(
+										"dish").length(); i++) {
+									JSONObject jsonobject = response
+											.getJSONArray("dish")
+											.getJSONObject(i);
+									Dish my_dish = new Dish(0,
+											jsonobject.getString("name"),
+											jsonobject.getInt("price"),
+											jsonobject.getInt("restId"));
+
+									ApplicationController.getInstance()
+											.getDish_list().add(my_dish);
+								}
+								Log.d("DishList:", ApplicationController
+										.getInstance().getDish_list()
+										.toString());
+
+							}
+							if (response.has("errorCode")) {
+								if (response.getString("errorCode")
+										.equals("-1")) {
+									int duration = Toast.LENGTH_LONG;
+									Toast toast = Toast.makeText(
+											getApplicationContext(),
+											getText(R.string.generic_error),
+											duration);
+									toast.show();
+								}
+							}
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Toast.makeText(getApplicationContext(),
+								getText(R.string.no_internet),
+								Toast.LENGTH_SHORT).show();
+						VolleyLog.e("Error: ", error.getMessage());
+					}
+				});
+		// add the request object to the queue to be executed
+		ApplicationController.getInstance().addToRequestQueue(req, "getDish");
 
 	}
-	
-	public void	getRestaurantRequest() {
-		  String                  finalurl = getString(R.string.URL) + "restaurant/searchall";
 
-		  JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, finalurl, null,
-	                 new Response.Listener<JSONObject>() {
-	                     @Override
-	                     public void onResponse(JSONObject response) {
-	                         try {
-	                             VolleyLog.v("Response:%s%n", response.toString(4));
-	                             Log.d("Response:", response.toString());
-	                             if (response.has("restaurants")) {
-	                                for (int i = 0; i < response.getJSONArray("restaurants").length(); i++) {
-	                                    JSONObject 	jsonobject 	=	response.getJSONArray("restaurants").getJSONObject(i);
-										int			id 			=	Integer.parseInt(jsonobject.getString("id"));
-										float		longitude 	=	(float) jsonobject.getDouble("longitude");
-										float		latitude 	=	(float) jsonobject.getDouble("latitude");
+	public void getRestaurantRequest() {
+		String finalurl = getString(R.string.URL) + "restaurant/searchall";
 
-	                                    Restaurant		my_restaurant			=	new Restaurant(id,
-	                                    											jsonobject.getString("name"), jsonobject.getString("description"),
-	                                    											longitude, latitude, jsonobject.getString("pictureUrl"));
+		JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,
+				finalurl, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						try {
+							VolleyLog.v("Response:%s%n", response.toString(4));
+							Log.d("Response:", response.toString());
+							if (response.has("restaurants")) {
+								for (int i = 0; i < response.getJSONArray(
+										"restaurants").length(); i++) {
+									JSONObject jsonobject = response
+											.getJSONArray("restaurants")
+											.getJSONObject(i);
+									int id = Integer.parseInt(jsonobject
+											.getString("id"));
+									float longitude = (float) jsonobject
+											.getDouble("longitude");
+									float latitude = (float) jsonobject
+											.getDouble("latitude");
 
-	                                    
-	                                    ApplicationController.getInstance().getRestaurant_list().add(my_restaurant);
-	                                }
+									Restaurant my_restaurant = new Restaurant(
+											id,
+											jsonobject.getString("name"),
+											jsonobject.getString("description"),
+											longitude, latitude, jsonobject
+													.getString("pictureUrl"));
 
-	                             }
-	                             if (response.has("errorCode"))
-	                             {
-	                            	 if (response.getString("errorCode").equals("-1")) {
-	                                         int duration = Toast.LENGTH_LONG;
-	                                         Toast toast = Toast.makeText(getApplicationContext(), getText(R.string.generic_error), duration);
-	                                         toast.show();
-	                                 }
-	                            }
-	                             
-	                         } catch (JSONException e) {
-	                             e.printStackTrace();
-	                         }
-	                     }
-	                 }, new Response.ErrorListener() {
-	             @Override
-	             public void onErrorResponse(VolleyError error) {
-	                 Toast.makeText(getApplicationContext(), getText(R.string.no_internet), Toast.LENGTH_SHORT).show();
-	                 VolleyLog.e("Error: ", error.getMessage());
-	             }
-	         });
-	          // add the request object to the queue to be executed                                                                                                                                              
-	          ApplicationController.getInstance().addToRequestQueue(req, "getRestaurant");
+									ApplicationController.getInstance()
+											.getRestaurant_list()
+											.add(my_restaurant);
+								}
+
+							}
+							if (response.has("errorCode")) {
+								if (response.getString("errorCode")
+										.equals("-1")) {
+									int duration = Toast.LENGTH_LONG;
+									Toast toast = Toast.makeText(
+											getApplicationContext(),
+											getText(R.string.generic_error),
+											duration);
+									toast.show();
+								}
+							}
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						Toast.makeText(getApplicationContext(),
+								getText(R.string.no_internet),
+								Toast.LENGTH_SHORT).show();
+						VolleyLog.e("Error: ", error.getMessage());
+					}
+				});
+		// add the request object to the queue to be executed
+		ApplicationController.getInstance().addToRequestQueue(req,
+				"getRestaurant");
 	}
 
 }

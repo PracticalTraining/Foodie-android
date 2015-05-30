@@ -6,8 +6,6 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.nfc.FormatException;
-import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import cn.edu.bjtu.foodie_android.R;
 import cn.edu.bjtu.foodie_android.bean.Dish;
 import cn.edu.bjtu.foodie_android.manager.ApplicationController;
@@ -32,6 +29,7 @@ public class DishActivity extends Activity {
 	private ListView lv_dish;
 	int count = 0;
 	private List<Dish> restDishList;
+	private ArrayList<Dish> selectDishList = new ArrayList<Dish>();
 	private DishAdapter adapter;
 	private int totalMoney = 0;
 	private TextView tv_money;
@@ -48,34 +46,24 @@ public class DishActivity extends Activity {
 		btn_commit = (Button) findViewById(R.id.btn_commit);
 		adapter = new DishAdapter();
 		initData();
+
 		lv_dish.setAdapter(adapter);
 		btn_commit.setOnClickListener(new OnClickListener() {
 
 			private NfcAdapter mNfcAdapter;
+			StringBuffer sb = new StringBuffer();
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				String totalMoneyStr = totalMoney + "";
-				try {
-					NdefMessage message = new NdefMessage(totalMoneyStr
-							.getBytes());
-					mNfcAdapter = NfcAdapter
-							.getDefaultAdapter(DishActivity.this);
-					if (mNfcAdapter == null) {
-						Toast.makeText(DishActivity.this,
-								"NFC is not available", Toast.LENGTH_LONG)
-								.show();
-						finish();
-						return;
-					}
-					mNfcAdapter.setNdefPushMessage(message, DishActivity.this,
-							null);
+				Intent intent = new Intent(DishActivity.this,
+						BlueToothActivity.class);
+				intent.putExtra("totalMoney", totalMoney);
 
-				} catch (FormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				for (Dish dish : selectDishList) {
+					sb.append(dish.toString());
 				}
+				intent.putExtra("select", sb.toString());
+				startActivity(intent);
 			}
 		});
 	}
@@ -141,6 +129,7 @@ public class DishActivity extends Activity {
 							}
 							Dish dish = list.get(position);
 							totalMoney += dish.getPrice();
+							selectDishList.add(dish);
 							tv_money.setText(totalMoney + "");
 						}
 					});

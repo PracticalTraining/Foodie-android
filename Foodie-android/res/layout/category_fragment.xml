@@ -43,7 +43,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
-                android:hint="关键词"
+                android:text="餐馆"
                 android:textSize="15.0dip" />
             <Button
                 android:id="@+id/btn_search"
